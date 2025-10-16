@@ -7,12 +7,31 @@ const options = {
 	},
 };
 
-fetch("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1", options)
-	.then((result) => {
+const paths = {
+	trendingMovies:
+		"https://api.themoviedb.org/3/trending/movie/week?language=en-US",
+	trendingShows:
+		"https://api.themoviedb.org/3/trending/tv/day?language=en-US",
+};
+
+const mediaItems = new Array();
+
+for (const path in paths) {
+	try {
+		const result = await fetch(paths[path], options);
 		if (!result.ok) throw new Error(`HTTP error! status: ${result.status}`);
-		return result.json();
-	})
-	.then((data) => {
-		console.log(data);
-	})
-	.catch((error) => console.error(error));
+		const data = await result.json();
+
+		data.results.forEach((element) => {
+			// Popularity Wert wird gerundet
+			element.popularity = Math.round(element.popularity);
+			mediaItems.push(element);
+		});
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// Sortieren nach Popularität (absteigend)
+mediaItems.sort((a, b) => b.popularity - a.popularity);
+console.log(mediaItems);
