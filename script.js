@@ -45,7 +45,7 @@ const heroImages = [
 	"https://image.tmdb.org/t/p/original/5P8SmMzSNYikXpxil6BYzJ16611.jpg",
 ];
 
-const heroElement = document.querySelector(".hero");
+const heroElement = document.getElementById("hero");
 
 if (heroElement && heroImages.length) {
 	let heroIndex = 0;
