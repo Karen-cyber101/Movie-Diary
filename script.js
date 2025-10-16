@@ -35,3 +35,29 @@ for (const path in paths) {
 // Sortieren nach Popularität (absteigend)
 mediaItems.sort((a, b) => b.popularity - a.popularity);
 console.log(mediaItems);
+
+
+// Dynamische Hero-Bilder
+const heroImages = [
+	"https://image.tmdb.org/t/p/original/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",
+	"https://image.tmdb.org/t/p/original/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+	"https://image.tmdb.org/t/p/original/kqjL17yufvn9OVLyXYpvtyrFfak.jpg",
+	"https://image.tmdb.org/t/p/original/5P8SmMzSNYikXpxil6BYzJ16611.jpg",
+];
+
+const heroElement = document.querySelector(".hero");
+
+if (heroElement && heroImages.length) {
+	let heroIndex = 0;
+
+	const updateHeroBackground = () => {
+		heroElement.style.backgroundImage = `url("${heroImages[heroIndex]}")`;
+	};
+
+	updateHeroBackground();
+
+	setInterval(() => {
+		heroIndex = (heroIndex + 1) % heroImages.length;
+		updateHeroBackground();
+	}, 5000);
+}

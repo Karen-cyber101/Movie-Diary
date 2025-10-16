@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <script type="module" src="script.js" defer></script>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Document</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script type="module" src="script.js" defer></script>
 </head>
-<body>
-    
+<body class="bg-black text-white">
+	<header
+		class="hero relative flex min-h-[70vh] w-full items-center justify-center bg-cover bg-center"
+	>
+		<div
+			class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80"
+		></div>
+		<div class="relative px-6 text-center">
+			<h1 class="text-4xl font-semibold tracking-wide sm:text-5xl md:text-6xl">
+				Movie Diary
+			</h1>
+			<p class="mt-4 text-lg text-white/80 sm:text-xl">
+				Discover new movie and series highlights every week.
+			</p>
+		</div>
+	</header>
 </body>
 </html>
