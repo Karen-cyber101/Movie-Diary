@@ -1,27 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Document</title>
-	<script src="https://cdn.tailwindcss.com"></script>
-	<script type="module" src="script.js" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Diary</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script type="module" src="script.js" defer></script>
+    
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+    </style>
 </head>
-<body class="bg-black text-white">
-	<header
-		class="hero relative flex min-h-[70vh] w-full items-center justify-center bg-cover bg-center"
-	>
-		<div
-			class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80"
-		></div>
-		<div class="relative px-6 text-center">
-			<h1 class="text-4xl font-semibold tracking-wide sm:text-5xl md:text-6xl">
-				Movie Diary
-			</h1>
-			<p class="mt-4 text-lg text-white/80 sm:text-xl">
-				Discover new movie and series highlights every week.
-			</p>
-		</div>
-	</header>
+
+<body class="font-[DM Sans] bg-gray-950 text-gray-100 antialiased tracking-tight">
+    <header class="fixed w-full h-16 z-10 bg-gray-950/10 px-8 py-0.5 grid grid-cols-3 items-center backdrop-blur-md border-b border-gray-500/10">
+        <h2 id="logo" class="justify-self-start uppercase text-md font-bold ">Movie Diary</h2>
+        <input type="search" id="site-search" name="q"
+            class="justify-self-center w-full h-3/4 rounded-3xl border-2 border-gray-700 px-3 py-2 text-sm placeholder-gray-100 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-600"
+            placeholder="Search for movies or series..." />
+        <nav class="justify-self-end flex gap-4">
+            <a href="#" class="text-sm font-bold hover:text-gray-500">Home</a>
+            <a href="#" class="text-sm font-bold hover:text-gray-500">Favorites</a>
+        </nav>
+    </header>
+    <section id="hero" class="relative flex min-h-[70vh] w-full items-center justify-center bg-cover bg-center">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80"></div>
+        <div class="relative px-6 text-center">
+            <h1 class="text-4xl font-semibold sm:text-5xl md:text-6xl">
+                Movie Diary
+            </h1>
+            <p class="mt-4 text-lg text-white/80 sm:text-xl">
+                Discover new movie and series highlights every week.
+            </p>
+        </div>
+    </section>
 </body>
+
 </html>
