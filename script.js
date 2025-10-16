@@ -7,7 +7,12 @@ const options = {
 	},
 };
 
-fetch("https://api.themoviedb.org/3/authentication", options)
-	.then((res) => res.json())
-	.then((res) => console.log(res))
-	.catch((err) => console.error(err));
+fetch("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1", options)
+	.then((result) => {
+		if (!result.ok) throw new Error(`HTTP error! status: ${result.status}`);
+		return result.json();
+	})
+	.then((data) => {
+		console.log(data);
+	})
+	.catch((error) => console.error(error));
