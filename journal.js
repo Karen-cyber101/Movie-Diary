@@ -48,18 +48,71 @@ favorites.forEach((movie) => {
   overview.textContent = movie.overview || "No description available.";
   overview.className = "mb-4 text-gray-200";
 
-  const notes = document.createElement("textarea");
-  notes.placeholder = "Add personal notes here...";
-  notes.className = "w-full p-2 rounded bg-gray-800 text-white resize-none";
-  if (movie.note) notes.value = movie.note;
-  notes.addEventListener("input", () => {
-    movie.note = notes.value;
+  // List for personal notes
+  const notesInput = document.createElement("textarea");
+  notesInput.placeholder = "Add personal notes here...";
+  notesInput.className = "w-full p-2 rounded bg-gray-800 text-white resize-none";
+  notesInput.rows = 3;
+
+  const saveNoteButton = document.createElement("button");
+  saveNoteButton.textContent = "Save Note";
+  saveNoteButton.className = "mt-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded self-start";
+
+  const notesList = document.createElement("div");
+  notesList.className = "mt-4 flex flex-col gap-2";
+
+  const ensureNotesArray = () => {
+    if (!Array.isArray(movie.notes)) {
+      const legacyNote = movie.notes || movie.note;
+      movie.notes = legacyNote ? [legacyNote] : [];
+      if (movie.note) delete movie.note;
+    }
+  };
+
+  const renderNotes = () => {
+    ensureNotesArray();
+    notesList.innerHTML = "";
+
+    movie.notes.forEach((note, index) => {
+      const noteItem = document.createElement("div");
+      noteItem.className = "flex items-center justify-between bg-gray-800/60 rounded px-3 py-2";
+
+      const noteText = document.createElement("p");
+      noteText.textContent = note;
+      noteText.className = "text-sm text-gray-100 pr-4";
+
+      const deleteNoteButton = document.createElement("button");
+      deleteNoteButton.textContent = "Remove";
+      deleteNoteButton.className = "bg-red-600 hover:bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded";
+      deleteNoteButton.addEventListener("click", () => {
+        movie.notes.splice(index, 1);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        renderNotes();
+      });
+
+      noteItem.appendChild(noteText);
+      noteItem.appendChild(deleteNoteButton);
+      notesList.appendChild(noteItem);
+    });
+  };
+
+  saveNoteButton.addEventListener("click", () => {
+    const noteValue = notesInput.value.trim();
+    if (!noteValue) return;
+    ensureNotesArray();
+    movie.notes.push(noteValue);
     localStorage.setItem("favorites", JSON.stringify(favorites));
+    notesInput.value = "";
+    renderNotes();
   });
 
   rightColumn.appendChild(title);
   rightColumn.appendChild(overview);
-  rightColumn.appendChild(notes);
+  rightColumn.appendChild(notesInput);
+  rightColumn.appendChild(saveNoteButton);
+  rightColumn.appendChild(notesList);
+
+  renderNotes();
 
   // Append columns to card
   movieContainer.appendChild(leftColumn);
