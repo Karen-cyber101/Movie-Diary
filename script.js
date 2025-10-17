@@ -17,6 +17,11 @@ const paths = {
 const mediaItems = new Array();
 const favorits = new Array();
 
+if (localStorage.getItem("favorits") !== null) {
+	favorits = JSON.parse(localStorage.getItem("favorits"));
+}
+
+
 for (const path in paths) {
 	try {
 		const result = await fetch(paths[path], options);

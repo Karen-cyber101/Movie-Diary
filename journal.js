@@ -1,8 +1,15 @@
-const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+const favorites = JSON.parse(localStorage.getItem("favorites"));
 const favoritesList = document.getElementById("favorites-list");
 
-// Clearing favoritesList in case of reload
-favoritesList.innerHTML = "";
+window.addEventListener("load", () => {
+  if (!favorites || favorites.length === 0) {
+    const noFavoritesMessage = document.createElement("p");
+    noFavoritesMessage.textContent = "You have no favorite movies yet.";
+    noFavoritesMessage.className = "text-center text-gray-400 mt-8";
+    favoritesList.appendChild(noFavoritesMessage);
+  }
+  favorits = JSON.parse(localStorage.getItem("favorits"));
+});
 
 favorites.forEach((movie) => {
   const movieContainer = document.createElement("div");
