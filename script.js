@@ -15,10 +15,10 @@ const paths = {
 };
 
 const mediaItems = new Array();
-const favorits = new Array();
+let favorites = new Array();
 
-if (localStorage.getItem("favorits") !== null) {
-	favorits = JSON.parse(localStorage.getItem("favorits"));
+if (localStorage.getItem("favorites") !== null) {
+	favorites = JSON.parse(localStorage.getItem("favorites"));
 }
 
 for (const path in paths) {
@@ -134,24 +134,24 @@ const detailView = (item) => {
 	const favoritButton = document.createElement("button");
 	favoritButton.className =
 		"w-full h-12 bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded";
-	favoritButton.textContent = "Add to Favorits";
+	favoritButton.textContent = "Add to favorites";
 	favoritButton.addEventListener("click", () => {
 		const selectedItem = mediaItems.find(
 			(media) =>
 				media.title === item.target.alt ||
 				media.name === item.target.alt
 		);
-		if (!favorits.includes(selectedItem)) {
-			favorits.push(selectedItem);
-			console.log(favorits);
-			favoritButton.textContent = "Added to Favorits";
+		if (!favorites.includes(selectedItem)) {
+			favorites.push(selectedItem);
+			console.log(favorites);
+			favoritButton.textContent = "Added to favorites";
 		} else {
-			favorits.pop(selectedItem);
-			console.log(favorits);
-			favoritButton.textContent = "Add to Favorits";
+			favorites.pop(selectedItem);
+			console.log(favorites);
+			favoritButton.textContent = "Add to favorites";
 		}
 		// Favoriten im localStorage speichern
-		localStorage.setItem("favorites", JSON.stringify(favorits));
+		localStorage.setItem("favorites", JSON.stringify(favorites));
 	});
 	detail__container.append(title, overview, rating, favoritButton);
 
