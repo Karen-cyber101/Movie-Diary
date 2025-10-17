@@ -1,4 +1,4 @@
-const favorites = JSON.parse(localStorage.getItem("favorites"));
+let favorites = JSON.parse(localStorage.getItem("favorites"));
 const favoritesList = document.getElementById("favorites-list");
 
 window.addEventListener("load", () => {
@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
     noFavoritesMessage.className = "text-center text-gray-400 mt-8";
     favoritesList.appendChild(noFavoritesMessage);
   }
-  favorits = JSON.parse(localStorage.getItem("favorits"));
+  favorites = JSON.parse(localStorage.getItem("favorites"));
 });
 
 favorites.forEach((movie) => {
