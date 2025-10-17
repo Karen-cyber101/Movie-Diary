@@ -84,30 +84,35 @@ const detailView = (item) => {
 	});
 	detailContent.appendChild(closeButton);
 
+	const detail__container = document.createElement("div");
+	detail__container.id = "detail__container";
+	detail__container.className = "grid-start-2 grid-end-3 h-full";
+	detailContent.appendChild(detail__container);
+
 	const title = document.createElement("h2");
-	title.className = "grid-start-2 grid-end-3 text-2xl font-bold mb-4";
+	title.className = "text-2xl font-bold mb-4";
 	title.textContent = item.target.alt;
-	detailContent.appendChild(title);
+
 
 	const overview = document.createElement("p");
-	overview.className = "grid-start-2 grid-end-3 mb-4";
+	overview.className = "mb-4";
 	overview.textContent = mediaItems.find(
 		(media) => media.title === item.target.alt || media.name === item.target.alt
 	).overview;
-	detailContent.appendChild(overview);
+
 
 	const rating = document.createElement("p");
-	rating.className = "grid-start-2 grid-end-3 mb-4";
+	rating.className = "mb-12";
 	rating.textContent = `Rating: ${mediaItems.find(
 		(media) => media.title === item.target.alt || media.name === item.target.alt
 	).vote_average} / 10 (${mediaItems.find(
 		(media) => media.title === item.target.alt || media.name === item.target.alt
 	).vote_count} votes)`;
-	detailContent.appendChild(rating);
+
 
 	const favoritButton = document.createElement("button");
 	favoritButton.className =
-		"grid-start-2 grid-end-3 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded";
+		"bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded";
 	favoritButton.textContent = "Add to Favorits";
 	favoritButton.addEventListener("click", () => {
 		const selectedItem = mediaItems.find(
@@ -124,7 +129,7 @@ const detailView = (item) => {
 			localStorage.setItem("favorites", JSON.stringify(favorits));
 		}
 	});
-	detailContent.appendChild(favoritButton);
+	detail__container.append(title, overview, rating, favoritButton);
 
 	detailContainer.appendChild(detailContent);
 	document.body.appendChild(detailContainer);
