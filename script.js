@@ -21,7 +21,6 @@ if (localStorage.getItem("favorits") !== null) {
 	favorits = JSON.parse(localStorage.getItem("favorits"));
 }
 
-
 for (const path in paths) {
 	try {
 		const result = await fetch(paths[path], options);
@@ -51,7 +50,7 @@ mediaItems.forEach((item) => {
 		"gallery__item rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform duration-300";
 
 	const image = document.createElement("img");
-	image.className = "w-full h-full object-cover";
+	image.className = "w-full h-full object-cover m-4 lg:m-0 rounded-lg ";
 	image.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
 	image.alt = item.title || item.name;
 
@@ -66,80 +65,99 @@ const detailView = (item) => {
 	const detailContainer = document.createElement("div");
 	detailContainer.id = "detail__container";
 	detailContainer.className =
-		"fixed inset-0 flex items-center justify-center z-20";
+		"fixed inset-0 bg-gray-900/20 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-20";
 
 	const detailContent = document.createElement("div");
-	detailContent.className =
-		"w-[min(100%-8rem,_800px)] bg-gray-900/40 backdrop-blur-lg rounded-lg px-12 py-16 relative grid grid-cols-[5fr_7fr] gap-8";
+	detailContent.className ="overflow-hidden w-[min(100svw-1.5rem,_800px)] h-[80svh] lg:h-auto bg-gray-900/40 backdrop-blur-lg rounded-3xl lg:rounded-lg lg:px-6 lg:py-6 relative grid grid-cols-1 lg:grid-cols-[repeat(2,_1fr)] grid-rows-1 lg:gap-8";
 
 	const itemImage = document.createElement("img");
-	itemImage.className = "grid-start-1 grid-end-2 w-full object-cover";
-	itemImage.src = `https://image.tmdb.org/t/p/w500${mediaItems.find(
-		(media) => media.title === item.target.alt || media.name === item.target.alt
-	).poster_path}`;
+	itemImage.className =
+		"col-start-1 row-start-1 w-full md:w-[min(100%,_480px))] md:m-12 md:m-0 justify-self-center object-cover rounded-2xl lg:rounded-lg";
+	itemImage.src = `https://image.tmdb.org/t/p/w500${
+		mediaItems.find(
+			(media) =>
+				media.title === item.target.alt ||
+				media.name === item.target.alt
+		).poster_path
+	}`;
 	itemImage.alt = item.target.alt;
 	detailContent.appendChild(itemImage);
+	
+	const detail__container = document.createElement("div");
+	detail__container.id = "detail__container";
+	detail__container.className =
+		"w-full bg-linear-to-t from-gray-950 from-30% to-gray-950/0 lg:bg-none col-start-1 lg:col-start-2 col-end-2 lg:col-end-3 row-start-1 row-end-2 self-end h-full px-4 md:px-24 lg:px-0 lg:pr-10 py-8 md:py-0 md:pb-24 lg:py-10 flex flex-col justify-end lg:items-start ";
+	detailContent.appendChild(detail__container);
 
 	const closeButton = document.createElement("button");
 	closeButton.className =
-		"absolute top-6 right-8 text-gray-400 hover:text-gray-200";
+		"lg:absolute lg:top-4 lg:right-4 w-12 h-12 bg-gray-600/40 backdrop-blur-lg rounded-full border-gray-400/40 text-gray-400 hover:text-gray-200 text-3xl flex items-center justify-center pb-1";
 	closeButton.innerHTML = "&times;";
 	closeButton.addEventListener("click", () => {
 		detailContainer.remove();
 	});
-	detailContent.appendChild(closeButton);
 
-	const detail__container = document.createElement("div");
-	detail__container.id = "detail__container";
-	detail__container.className = "grid-start-2 grid-end-3 h-full";
-	detailContent.appendChild(detail__container);
+	if (window.innerWidth >= 1024 /* lg */) {
+		detailContent.appendChild(closeButton);
+	} else {
+		detailContainer.appendChild(closeButton);
+	}
+
 
 	const title = document.createElement("h2");
-	title.className = "text-2xl font-bold mb-4";
+	title.className = "text-4xl lg:text-3xl font-bold mb-4";
 	title.textContent = item.target.alt;
 
-
 	const overview = document.createElement("p");
-	overview.className = "mb-4";
+	overview.className = "lg:h-full text-xl lg:text-base text-justify lg:text-left mb-4";
 	overview.textContent = mediaItems.find(
-		(media) => media.title === item.target.alt || media.name === item.target.alt
+		(media) =>
+			media.title === item.target.alt || media.name === item.target.alt
 	).overview;
 
-
 	const rating = document.createElement("p");
-	rating.className = "mb-12";
-	rating.textContent = `Rating: ${mediaItems.find(
-		(media) => media.title === item.target.alt || media.name === item.target.alt
-	).vote_average} / 10 (${mediaItems.find(
-		(media) => media.title === item.target.alt || media.name === item.target.alt
-	).vote_count} votes)`;
-
+	rating.className = "text-sm text-gray-400 font-bold mb-4";
+	rating.textContent = `Rating: ${
+		mediaItems.find(
+			(media) =>
+				media.title === item.target.alt ||
+				media.name === item.target.alt
+		).vote_average
+	} / 10 (${
+		mediaItems.find(
+			(media) =>
+				media.title === item.target.alt ||
+				media.name === item.target.alt
+		).vote_count
+	} votes)`;
 
 	const favoritButton = document.createElement("button");
 	favoritButton.className =
-		"bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded";
+		"w-full h-12 bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded";
 	favoritButton.textContent = "Add to Favorits";
 	favoritButton.addEventListener("click", () => {
 		const selectedItem = mediaItems.find(
 			(media) =>
-				media.title === item.target.alt || media.name === item.target.alt
+				media.title === item.target.alt ||
+				media.name === item.target.alt
 		);
 		if (!favorits.includes(selectedItem)) {
 			favorits.push(selectedItem);
 			console.log(favorits);
 			favoritButton.textContent = "Added to Favorits";
-			favoritButton.disabled = true;
-
-			// Favoriten im localStorage speichern
-			localStorage.setItem("favorites", JSON.stringify(favorits));
+		} else {
+			favorits.pop(selectedItem);
+			console.log(favorits);
+			favoritButton.textContent = "Add to Favorits";
 		}
+		// Favoriten im localStorage speichern
+		localStorage.setItem("favorites", JSON.stringify(favorits));
 	});
 	detail__container.append(title, overview, rating, favoritButton);
 
 	detailContainer.appendChild(detailContent);
 	document.body.appendChild(detailContainer);
-}
-
+};
 
 // Dynamische Hero-Bilder
 const heroImages = [
