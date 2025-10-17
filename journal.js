@@ -1,19 +1,21 @@
-let favorites = JSON.parse(localStorage.getItem("favorites"));
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+const notesStorageKey = "favoriteNotes";
+const savedNotes = JSON.parse(localStorage.getItem(notesStorageKey)) || {};
 const favoritesList = document.getElementById("favorites-list");
 
 window.addEventListener("load", () => {
-  if (!favorites || favorites.length === 0) {
+  if (favorites.length === 0) {
     const noFavoritesMessage = document.createElement("p");
     noFavoritesMessage.textContent = "You have no favorite movies yet.";
     noFavoritesMessage.className = "text-center text-gray-400 mt-8";
     favoritesList.appendChild(noFavoritesMessage);
   }
-  favorites = JSON.parse(localStorage.getItem("favorites"));
 });
 
 favorites.forEach((movie) => {
   const movieContainer = document.createElement("div");
   movieContainer.className = "flex bg-gray-900/20 rounded-lg shadow-lg mb-6 overflow-hidden max-w-[1600px] mx-auto";
+  const movieId = movie.id ?? movie.title;
 
   // Left column: poster + remove button
   const leftColumn = document.createElement("div");
@@ -28,8 +30,18 @@ favorites.forEach((movie) => {
   removeButton.textContent = "Remove from Favorites";
   removeButton.className = "bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded";
   removeButton.addEventListener("click", () => {
-    const updatedFavorites = favorites.filter(fav => fav.title !== movie.title);
+    const updatedFavorites = favorites.filter((fav) => {
+      if (movie.id && fav.id) {
+        return fav.id !== movie.id;
+      }
+      return fav.title !== movie.title;
+    });
+    favorites = updatedFavorites;
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    if (savedNotes[movieId]) {
+      delete savedNotes[movieId];
+      localStorage.setItem(notesStorageKey, JSON.stringify(savedNotes));
+    }
     movieContainer.remove();
   });
 
@@ -67,6 +79,20 @@ favorites.forEach((movie) => {
       movie.notes = legacyNote ? [legacyNote] : [];
       if (movie.note) delete movie.note;
     }
+    if (movie.notes.length === 0 && Array.isArray(savedNotes[movieId])) {
+      movie.notes = [...savedNotes[movieId]];
+    }
+  };
+
+  const persistNotes = () => {
+    ensureNotesArray();
+    if (movie.notes.length > 0) {
+      savedNotes[movieId] = movie.notes;
+    } else if (savedNotes[movieId]) {
+      delete savedNotes[movieId];
+    }
+    localStorage.setItem(notesStorageKey, JSON.stringify(savedNotes));
+    localStorage.setItem("favorites", JSON.stringify(favorites));
   };
 
   const renderNotes = () => {
@@ -86,7 +112,7 @@ favorites.forEach((movie) => {
       deleteNoteButton.className = "bg-red-600 hover:bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded";
       deleteNoteButton.addEventListener("click", () => {
         movie.notes.splice(index, 1);
-        localStorage.setItem("favorites", JSON.stringify(favorites));
+        persistNotes();
         renderNotes();
       });
 
@@ -101,7 +127,7 @@ favorites.forEach((movie) => {
     if (!noteValue) return;
     ensureNotesArray();
     movie.notes.push(noteValue);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+    persistNotes();
     notesInput.value = "";
     renderNotes();
   });
@@ -112,6 +138,10 @@ favorites.forEach((movie) => {
   rightColumn.appendChild(saveNoteButton);
   rightColumn.appendChild(notesList);
 
+  ensureNotesArray();
+  if (movie.notes.length > 0) {
+    persistNotes();
+  }
   renderNotes();
 
   // Append columns to card
