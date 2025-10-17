@@ -163,7 +163,7 @@ const detailView = (item) => {
 const heroImages = [
 	"https://image.tmdb.org/t/p/original/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",
 	"https://image.tmdb.org/t/p/original/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
-	"https://image.tmdb.org/t/p/original/kqjL17yufvn9OVLyXYpvtyrFfak.jpg",
+	"https://image.tmdb.org/t/p/original/53BC9F2tpZnsGno2cLhzvGprDYS.jpg",
 	"https://image.tmdb.org/t/p/original/5P8SmMzSNYikXpxil6BYzJ16611.jpg",
 ];
 
@@ -172,14 +172,11 @@ const heroElement = document.getElementById("hero");
 if (heroElement && heroImages.length) {
 	let heroIndex = 0;
 
-	const updateHeroBackground = () => {
+	const cycleHeroBackground = () => {
 		heroElement.style.backgroundImage = `url("${heroImages[heroIndex]}")`;
+		heroIndex = (heroIndex + 1) % heroImages.length;
 	};
 
-	updateHeroBackground();
-
-	setInterval(() => {
-		heroIndex = (heroIndex + 1) % heroImages.length;
-		updateHeroBackground();
-	}, 5000);
+	cycleHeroBackground();
+	setInterval(cycleHeroBackground, 5000);
 }
