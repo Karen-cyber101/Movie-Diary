@@ -56,7 +56,7 @@ if (localStorage.getItem("favorites") !== null) {
 		image.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
 		image.alt = item.title || item.name;
 
-		listItem.addEventListener("click", (item) => detailView(item));
+		listItem.addEventListener("click", (event) => detailView(event));
 
 		listItem.appendChild(image);
 		galleryContainer.appendChild(listItem);

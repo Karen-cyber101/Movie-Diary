@@ -9,6 +9,7 @@ yarn.lock
 # Production
 /build
 /dist
+.parcel-cache/
 
 # Environment variables
 .env
