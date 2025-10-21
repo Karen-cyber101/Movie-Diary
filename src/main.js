@@ -21,43 +21,46 @@ if (localStorage.getItem("favorites") !== null) {
 	favorites = JSON.parse(localStorage.getItem("favorites"));
 }
 
-for (const path in paths) {
-	try {
-		const result = await fetch(paths[path], options);
-		if (!result.ok) throw new Error(`HTTP error! status: ${result.status}`);
-		const data = await result.json();
+(async () => {
+	for (const path in paths) {
+		try {
+			const result = await fetch(paths[path], options);
+			if (!result.ok)
+				throw new Error(`HTTP error! status: ${result.status}`);
+			const data = await result.json();
 
-		data.results.forEach((element) => {
-			// Popularity Wert wird gerundet
-			element.popularity = Math.round(element.popularity);
-			mediaItems.push(element);
-		});
-	} catch (error) {
-		console.error(error);
+			data.results.forEach((element) => {
+				// Popularity Wert wird gerundet
+				element.popularity = Math.round(element.popularity);
+				mediaItems.push(element);
+			});
+		} catch (error) {
+			console.error(error);
+		}
 	}
-}
+})().then(() => {
+	// Sortieren nach Popularität (absteigend)
+	mediaItems.sort((a, b) => b.popularity - a.popularity);
+	console.log(mediaItems);
 
-// Sortieren nach Popularität (absteigend)
-mediaItems.sort((a, b) => b.popularity - a.popularity);
-console.log(mediaItems);
+	// Galerie-Elemente erstellen
+	const galleryContainer = document.getElementById("gallery__container");
 
-// Galerie-Elemente erstellen
-const galleryContainer = document.getElementById("gallery__container");
+	mediaItems.forEach((item) => {
+		const listItem = document.createElement("li");
+		listItem.className =
+			"gallery__item rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform duration-300";
 
-mediaItems.forEach((item) => {
-	const listItem = document.createElement("li");
-	listItem.className =
-		"gallery__item rounded-lg overflow-hidden shadow-lg hover:scale-103 transition-transform duration-300";
+		const image = document.createElement("img");
+		image.className = "w-full h-full object-cover m-4 lg:m-0 rounded-lg ";
+		image.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+		image.alt = item.title || item.name;
 
-	const image = document.createElement("img");
-	image.className = "w-full h-full object-cover m-4 lg:m-0 rounded-lg ";
-	image.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-	image.alt = item.title || item.name;
+		listItem.addEventListener("click", (event) => detailView(event));
 
-	listItem.addEventListener("click", (item) => detailView(item));
-
-	listItem.appendChild(image);
-	galleryContainer.appendChild(listItem);
+		listItem.appendChild(image);
+		galleryContainer.appendChild(listItem);
+	});
 });
 
 // Detailansicht
@@ -68,7 +71,8 @@ const detailView = (item) => {
 		"fixed inset-0 bg-gray-900/20 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-20";
 
 	const detailContent = document.createElement("div");
-	detailContent.className ="overflow-hidden w-[min(100svw-1.5rem,_800px)] h-[80svh] lg:h-auto bg-gray-900/40 backdrop-blur-lg rounded-3xl lg:rounded-lg lg:px-6 lg:py-6 relative grid grid-cols-1 lg:grid-cols-[repeat(2,_1fr)] grid-rows-1 lg:gap-8";
+	detailContent.className =
+		"overflow-hidden w-[min(100svw-1.5rem,_800px)] h-[80svh] lg:h-auto bg-gray-900/40 backdrop-blur-lg rounded-3xl lg:rounded-lg lg:px-6 lg:py-6 relative grid grid-cols-1 lg:grid-cols-[repeat(2,_1fr)] grid-rows-1 lg:gap-8";
 
 	const itemImage = document.createElement("img");
 	itemImage.className =
@@ -82,7 +86,7 @@ const detailView = (item) => {
 	}`;
 	itemImage.alt = item.target.alt;
 	detailContent.appendChild(itemImage);
-	
+
 	const detail__container = document.createElement("div");
 	detail__container.id = "detail__container";
 	detail__container.className =
@@ -103,13 +107,13 @@ const detailView = (item) => {
 		detailContainer.appendChild(closeButton);
 	}
 
-
 	const title = document.createElement("h2");
 	title.className = "text-4xl lg:text-3xl font-bold mb-4";
 	title.textContent = item.target.alt;
 
 	const overview = document.createElement("p");
-	overview.className = "lg:h-full text-xl lg:text-base text-justify lg:text-left mb-4";
+	overview.className =
+		"lg:h-full text-xl lg:text-base text-justify lg:text-left mb-4";
 	overview.textContent = mediaItems.find(
 		(media) =>
 			media.title === item.target.alt || media.name === item.target.alt
