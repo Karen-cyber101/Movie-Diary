@@ -1,0 +1,15 @@
+{
+	"name": "movie-diary",
+	"version": "1.0.0",
+	"description": "A movie diary application to track and review movies you've watched.",
+	"source": ["src/index.html", "src/journal.html"],
+	"scripts": {
+		"dev": "parcel",
+		"build": "parcel build"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4.1.15",
+		"parcel": "^2.16.0",
+		"tailwindcss": "^4.1.15"
+	}
+}

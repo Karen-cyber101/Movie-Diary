@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Diary - Favorites</title>
+
+  <link href="./css/style.css" type="text/css" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+  </style>
+</head>
+
+<body class="font-[DM Sans] bg-black text-gray-100 antialiased tracking-tight flex flex-col min-h-screen">
+
+  <header
+    class="fixed w-full h-16 z-10 bg-gray-950/10 px-8 py-0.5 grid grid-cols-3 items-center backdrop-blur-lg border-b border-gray-500/10">
+    <h2 id="logo" class="justify-self-start uppercase text-md font-bold">Movie Diary</h2>
+    <input type="search" id="site-search" name="q"
+      class="justify-self-center w-full h-3/4 rounded-3xl border-2 border-gray-700 px-3 py-2 text-sm placeholder-gray-400 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-600"
+      placeholder="Search for movies or series..." />
+    <nav class="justify-self-end flex gap-4">
+      <a href="index.html" class="text-sm font-bold hover:text-gray-500">Home</a>
+      <a href="journal.html" class="text-sm font-bold hover:text-gray-500">Favorites</a>
+    </nav>
+  </header>
+
+  <div class="h-16"></div>
+
+  <main class="flex-1 w-[min(100%-4rem,1600px)] mx-auto px-4 py-6">
+    <section id="favorites-list" class="flex flex-col gap-6"></section>
+  </main>
+
+  <footer class="bg-gray-900 text-gray-400 py-4 text-center mt-auto">
+    © 2025 Movie Diary
+  </footer>
+
+  <script src="./journal.js"></script>
+</body>
+
+</html>

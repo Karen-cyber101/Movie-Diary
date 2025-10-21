@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movie Diary</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script type="module" src="script.js" defer></script>
-
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link href="./css/style.css" type="text/css" rel="stylesheet" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
     </style>
 </head>
+    
 
 <body class="font-[DM Sans] bg-black text-gray-100 antialiased tracking-tight">
     <header
@@ -29,7 +27,7 @@
     </header>
 
     <section id="hero" class="relative flex min-h-[70vh] w-full items-center justify-center bg-cover bg-center">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/80"></div>
+        <div class="absolute inset-0 bg-linear-to-b from-black/70 via-black/30 to-black/80"></div>
         <div class="relative px-6 text-center">
             <h1 class="text-4xl font-semibold sm:text-5xl md:text-6xl">
                 Movie Diary
@@ -40,17 +38,19 @@
         </div>
     </section>
 
-    <section id="gallery" class="w-[min(100%-4rem,_1600px)] mx-auto  py-12">
+    <section id="gallery" class="w-[min(100%-4rem,1600px)] mx-auto  py-12">
         <div id="gallery__header" class="w-full my-12 flex space-between">
             <h2 id="gallery__headline" class="text-4xl uppercase font-bold">trending right now</h2>
         </div>
         <ul id="gallery__container"
-            class="col-start-2 -col-end-2 grid grid-cols-[repeat(auto-fit,_minmax(min(192px,_320px),_1fr))] gap-3"></ul>
+            class="col-start-2 -col-end-2 grid grid-cols-[repeat(auto-fit,minmax(min(192px,320px),1fr))] gap-3"></ul>
     </section>
 
     <footer class="bg-gray-900 text-gray-400 py-4 text-center mt-auto">
         © 2025 Movie Diary
     </footer>
+
+    <script src="main.js"></script>
 </body>
 
 </html>
