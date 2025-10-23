@@ -1,3 +1,5 @@
+// Handles landing page media fetch, gallery rendering, and detail overlay interactions.
+// Shared request options for TMDB API calls (auth header + JSON response).
 const options = {
 	method: "GET",
 	headers: {
@@ -7,6 +9,7 @@ const options = {
 	},
 };
 
+// API endpoints for the trending categories displayed on the hero gallery.
 const paths = {
 	trendingMovies:
 		"https://api.themoviedb.org/3/trending/movie/week?language=en-US",
@@ -14,14 +17,17 @@ const paths = {
 		"https://api.themoviedb.org/3/trending/tv/day?language=en-US",
 };
 
+// Unified in-memory cache for fetched media and persisted favorites.
 const mediaItems = new Array();
 let favorites = new Array();
 
 if (localStorage.getItem("favorites") !== null) {
+	// Restore favorites so the modal button reflects prior selections.
 	favorites = JSON.parse(localStorage.getItem("favorites"));
 }
 
 (async () => {
+	// Fetch both movie and TV listings from TMDB and normalize them into one list.
 	for (const path in paths) {
 		try {
 			const result = await fetch(paths[path], options);
@@ -30,7 +36,6 @@ if (localStorage.getItem("favorites") !== null) {
 			const data = await result.json();
 
 			data.results.forEach((element) => {
-				// Popularity Wert wird gerundet
 				element.popularity = Math.round(element.popularity);
 				mediaItems.push(element);
 			});
@@ -39,7 +44,7 @@ if (localStorage.getItem("favorites") !== null) {
 		}
 	}
 })().then(() => {
-	// Sortieren nach Popularität (absteigend)
+	// Sort by popularity (descending) so the hottest titles appear first.
 	mediaItems.sort((a, b) => b.popularity - a.popularity);
 	console.log(mediaItems);
 
@@ -65,6 +70,7 @@ if (localStorage.getItem("favorites") !== null) {
 
 // Detailansicht
 const detailView = (item) => {
+	// Build the full-screen detail overlay for the selected item.
 	const detailContainer = document.createElement("div");
 	detailContainer.id = "detail__container";
 	detailContainer.className =
@@ -140,6 +146,7 @@ const detailView = (item) => {
 		"w-full h-12 bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded";
 	favoritButton.textContent = "Add to favorites";
 	favoritButton.addEventListener("click", () => {
+		// Toggle favorite state and persist choices across sessions.
 		const selectedItem = mediaItems.find(
 			(media) =>
 				media.title === item.target.alt ||
@@ -154,7 +161,7 @@ const detailView = (item) => {
 			console.log(favorites);
 			favoritButton.textContent = "Add to favorites";
 		}
-		// Favoriten im localStorage speichern
+		// Persist favorites in localStorage so they survive reloads.
 		localStorage.setItem("favorites", JSON.stringify(favorites));
 	});
 	detail__container.append(title, overview, rating, favoritButton);
@@ -176,6 +183,7 @@ const heroElement = document.getElementById("hero");
 if (heroElement && heroImages.length) {
 	let heroIndex = 0;
 
+	// Rotate hero background image every 5 seconds.
 	const cycleHeroBackground = () => {
 		heroElement.style.backgroundImage = `url("${heroImages[heroIndex]}")`;
 		heroIndex = (heroIndex + 1) % heroImages.length;
