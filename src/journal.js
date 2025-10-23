@@ -1,3 +1,4 @@
+// Manages the favorites journal: loads saved media, allows note taking, and syncs localStorage.
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 const notesStorageKey = "favoriteNotes";
 const savedNotes = JSON.parse(localStorage.getItem(notesStorageKey)) || {};
@@ -73,6 +74,7 @@ favorites.forEach((movie) => {
   const notesList = document.createElement("div");
   notesList.className = "mt-4 flex flex-col gap-2";
 
+  // Normalize legacy note fields into a single array structure.
   const ensureNotesArray = () => {
     if (!Array.isArray(movie.notes)) {
       const legacyNote = movie.notes || movie.note;
@@ -84,6 +86,7 @@ favorites.forEach((movie) => {
     }
   };
 
+  // Persist note changes to dedicated storage and keep favorites copy aligned.
   const persistNotes = () => {
     ensureNotesArray();
     if (movie.notes.length > 0) {
@@ -95,6 +98,7 @@ favorites.forEach((movie) => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   };
 
+  // Re-render the visible list of notes after each mutation.
   const renderNotes = () => {
     ensureNotesArray();
     notesList.innerHTML = "";
