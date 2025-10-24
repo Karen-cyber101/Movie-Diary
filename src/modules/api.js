@@ -25,7 +25,7 @@ const fetchPath = async (path) => {
 		return results;
 	} catch (error) {
 		console.error(error);
-		return [];
+		throw error;
 	}
 };
 
