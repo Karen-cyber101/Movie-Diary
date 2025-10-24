@@ -1,8 +1,17 @@
+import { showStatusMessage } from "./statusView.js";
+
 // Renders the hero gallery list and wires click handlers for detail overlays.
 export const renderGallery = (container, mediaItems, onSelect) => {
 	if (!container || !Array.isArray(mediaItems)) return;
 
 	container.innerHTML = "";
+
+	// Shows "No movies found" if list is empty or invalid
+	if (!Array.isArray(mediaItems) || mediaItems.length === 0) {
+		showStatusMessage(container, "No movies found. Please try again later.");
+		return;
+	}
+
 	const fragment = document.createDocumentFragment();
 
 	mediaItems.forEach((item) => {
