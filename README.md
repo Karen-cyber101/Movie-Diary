@@ -7,6 +7,7 @@ This project was built as a learning exercise to practice frontend development, 
 
 ## Project Structure
 
+
 .
 ├── src/
 │   ├── components/
@@ -54,6 +55,3 @@ The purpose of this project is to:
 - Improve JavaScript and CSS skills
 - Build a functional diary-style application
 
-
-Karen M. Zinzius  
-Frontend / Full-Stack learning project
